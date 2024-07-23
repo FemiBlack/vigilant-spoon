@@ -64,7 +64,7 @@
             source ~/.bashrc
             cd /home/GFC
             docker-compose pull
-	    docker-compose up -d
+            docker-compose up -d
       
       - name: Output SSH command results
         run: |
