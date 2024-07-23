@@ -73,8 +73,9 @@
       #     ssh_private_key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
       #     command: '"echo test123"'
       - name: Deploy to VM
-        run: |
-          gcloud compute ssh test2 --quiet --tunnel-through-iap --zone us-central1-a --ssh-key-file ~/.ssh/google_compute_engine --command "echo test > /home/GFC/teste.txt"
+        run: ssh -i ~/.ssh/test GFC@${{ secrets.GCE_INSTANCE_IP }} 'bash -c echo test > /home/GFC/something'
+        # run: |
+          # gcloud compute ssh test2 --quiet --tunnel-through-iap --zone us-central1-a --ssh-key-file ~/.ssh/google_compute_engine --command "echo test > /home/GFC/teste.txt"
       
       - name: Output SSH command results
         run: |
