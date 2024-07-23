@@ -12,7 +12,7 @@
   
       steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
   
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
@@ -21,6 +21,17 @@
   
       - name: Configure Docker to use gcloud as a credential helper
         run: gcloud auth configure-docker
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          version: '>= 363.0.0'
+
+      - name: Add SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GCE_SSH_PRIVATE_KEY }}" > ~/.ssh/google_compute_engine
+          chmod 400 ~/.ssh/google_compute_engine
   
       - name: Build Docker images
         env:
@@ -52,14 +63,17 @@
           source: docker-compose.yml
           target: /home/GFC
   
-      - name: Deploy to GCE 
-        id: compute-ssh
-        uses: google-github-actions/ssh-compute@v1
-        with:
-          instance_name: 'test2'
-          zone: 'us-central1-a'
-          ssh_private_key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
-          command: '"echo test123"'
+      # - name: Deploy to GCE 
+      #   id: compute-ssh
+      #   uses: google-github-actions/ssh-compute@v1
+      #   with:
+      #     instance_name: 'test2'
+      #     zone: 'us-central1-a'
+      #     ssh_private_key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
+      #     command: '"echo test123"'
+      - name: Deploy to VM
+        run: |
+          gcloud compute ssh test2 --quiet --tunnel-through-iap --zone us-central1-a --ssh-key-file ~/.ssh/google_compute_engine --command "echo test > /home/GFC/teste.txt"
       
       - name: Output SSH command results
         run: |
