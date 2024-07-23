@@ -59,7 +59,7 @@
           instance_name: 'test2'
           zone: 'us-central1-a'
           ssh_private_key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
-          command: '""echo test123 > /home/GFC/tes.txt""'
+          command: 'echo test123'
       
       - name: Output SSH command results
         run: |
