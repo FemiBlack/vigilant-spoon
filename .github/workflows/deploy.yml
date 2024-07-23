@@ -79,7 +79,7 @@
         run: ssh -i ~/.ssh/google_compute_engine GFC@${{ secrets.GCE_INSTANCE_IP }} 'bash -c "source /home/GFC/.bashrc"'
         
       - name: Deploy to VM
-        run: ssh -i ~/.ssh/google_compute_engine GFC@${{ secrets.GCE_INSTANCE_IP }} 'bash -c "docker-compose pull && docker-compose up"'
+        run: ssh -i ~/.ssh/google_compute_engine GFC@${{ secrets.GCE_INSTANCE_IP }} 'docker-compose pull && docker-compose up'
         # run: |
           # gcloud compute ssh test2 --quiet --tunnel-through-iap --zone us-central1-a --ssh-key-file ~/.ssh/google_compute_engine --command "echo test > /home/GFC/teste.txt"
       
