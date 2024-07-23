@@ -59,7 +59,6 @@
           instance_name: 'test2'
           zone: 'us-central1-a'
           ssh_private_key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
-          flags: '--troubleshoot'
           command: '"echo test > /home/GFC/file.txt"'
       
       - name: Output SSH command results
