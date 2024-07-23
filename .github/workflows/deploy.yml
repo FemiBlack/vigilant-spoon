@@ -31,10 +31,10 @@
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.GCE_SSH_PRIVATE_KEY }}" > ~/.ssh/google_compute_engine1
-          ssh-keygen -y -f ~/.ssh/google_compute_engine1 > ~/.ssh/google_compute_engine1.pub
+          ssh-keygen -y -f ~/.ssh/google_compute_engine > ~/.ssh/google_compute_engine.pub
           chmod 777 ~/.ssh
-          chmod 600 ~/.ssh/google_compute_engine1
-          chmod 600 ~/.ssh/google_compute_engine1.pub
+          chmod 400 ~/.ssh/google_compute_engine
+          chmod 644 ~/.ssh/google_compute_engine1.pub
   
       - name: Build Docker images
         env:
@@ -76,7 +76,7 @@
       #     command: '"echo test123"'
       - name: Deploy to VM
         run: |
-          gcloud compute ssh test2 --quiet --tunnel-through-iap --zone us-central1-a --ssh-key-file ~/.ssh/google_compute_engine1 --command "echo test > /home/GFC/teste.txt"
+          gcloud compute ssh test2 --quiet --tunnel-through-iap --zone us-central1-a --ssh-key-file ~/.ssh/google_compute_engine --command "echo test > /home/GFC/teste.txt"
       
       - name: Output SSH command results
         run: |
