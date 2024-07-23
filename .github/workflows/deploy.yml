@@ -60,7 +60,7 @@
           zone: 'us-central1-a'
           ssh_private_key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
           flags: '--troubleshoot'
-          command: 'curl https://gist.github.com/FemiBlack/e2df4fab82ba697fe33c24133533095e | bash && source ~/.bashrc && cd /home/GFC && docker-compose pull && docker-compose up -d'
+          command: 'echo "test" > /home/GFC/file.txt'
       
       - name: Output SSH command results
         run: |
