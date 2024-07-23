@@ -22,16 +22,26 @@
       - name: Configure Docker to use gcloud as a credential helper
         run: gcloud auth configure-docker
   
-      - name: Build and push Docker images
+      - name: Build Docker images
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           SHORT_SHA: ${{ github.sha }}
         run: |
           docker-compose -f docker-compose.yml build
-          
-          docker tag app:latest gcr.io/${PROJECT_ID}/app:${SHORT_SHA}
-          docker push gcr.io/${PROJECT_ID}/app:${SHORT_SHA}
-      
+
+      - name: List Docker images
+        run: |
+          docker-compose -f docker-compose.yml config --images > image_names.txt
+
+      - name: Tag and push Docker images
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          SHORT_SHA: ${{ github.sha }}
+        run: |
+          while IFS= read -r image; do
+            docker tag $image gcr.io/${PROJECT_ID}/$(echo $image | sed 's/:latest/:${SHORT_SHA}/')
+            docker push gcr.io/${PROJECT_ID}/$(echo $image | sed 's/:latest/:${SHORT_SHA}/')
+          done < image_names.txt    
   
       - name: Copy Docker Compose file to VM
         uses: appleboy/scp-action@master
@@ -53,7 +63,8 @@
             curl https://gist.github.com/FemiBlack/e2df4fab82ba697fe33c24133533095e | bash
             source ~/.bashrc
             cd /home/GFC
-            docker-compose pull app && docker-compose up -d
+            docker-compose pull
+	    docker-compose up -d
       
       - name: Output SSH command results
         run: |
