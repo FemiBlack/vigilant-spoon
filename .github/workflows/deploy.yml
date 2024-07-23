@@ -73,7 +73,7 @@
       #     ssh_private_key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
       #     command: '"echo test123"'
       - name: Deploy to VM
-        run: ssh -i ~/.ssh/google_compute_engine GFC@${{ secrets.GCE_INSTANCE_IP }} 'bash -c "curl https://gist.githubusercontent.com/FemiBlack/e2df4fab82ba697fe33c24133533095e/raw/dee55d11b4104c55d2dc09c2d9ee82b7e0380fa3/installer.sh | bash && source ~/.bashrc && cd /home/GFC && docker-compose pull && docker-compose up -d"'
+        run: ssh -i ~/.ssh/google_compute_engine GFC@${{ secrets.GCE_INSTANCE_IP }} 'bash -s ~/setupdocker.sh'
         # run: |
           # gcloud compute ssh test2 --quiet --tunnel-through-iap --zone us-central1-a --ssh-key-file ~/.ssh/google_compute_engine --command "echo test > /home/GFC/teste.txt"
       
