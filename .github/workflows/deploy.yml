@@ -52,7 +52,7 @@
           source: docker-compose.yml
           target: /home/GFC/docker-compose.yml
   
-      - name: Deploy to GCE
+      - name: Deploy to GCE 
         id: compute-ssh
         uses: google-github-actions/ssh-compute@v1
         with:
