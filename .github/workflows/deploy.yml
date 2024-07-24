@@ -51,8 +51,8 @@
           SHORT_SHA: ${{ github.sha }}
         run: |
           while IFS= read -r image; do
-            docker tag $image us-central1-docker.pkg.dev/${PROJECT_ID}/test2-repo/$image:${SHORT_SHA}')
-            docker push us-central1-docker.pkg.dev/${PROJECT_ID}/test2-repo/$image:${SHORT_SHA}')
+            docker tag $image us-central1-docker.pkg.dev/${PROJECT_ID}/test2-repo/$image:${SHORT_SHA}
+            docker push us-central1-docker.pkg.dev/${PROJECT_ID}/test2-repo/$image:${SHORT_SHA}
           done < image_names.txt
         
       - name: Copy Docker Compose file to VM
