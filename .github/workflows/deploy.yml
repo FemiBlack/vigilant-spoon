@@ -51,6 +51,7 @@
           SHORT_SHA: ${{ github.sha }}
         run: |
           while IFS= read -r image; do
+            echo $image
             docker tag $image us-central1-docker.pkg.dev/${PROJECT_ID}/test2-repo/$image:${SHORT_SHA}
             docker push us-central1-docker.pkg.dev/${PROJECT_ID}/test2-repo/$image:${SHORT_SHA}
           done < image_names.txt
