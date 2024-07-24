@@ -18,6 +18,17 @@
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Check Docker Version
+        run: docker --version
+      - name: Install Latest Docker
+        run: |
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
+          sudo apt-get update
+          sudo apt-get install docker-ce
+      - name: Check Docker Version
+        run: docker --version
   
       - name: Configure Docker to use gcloud as a credential helper
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
