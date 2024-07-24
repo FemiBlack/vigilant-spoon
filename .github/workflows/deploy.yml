@@ -50,11 +50,13 @@
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           SHORT_SHA: ${{ github.sha }}
         run: |
+          echo doing this
           while IFS= read -r image; do
             echo $image
             docker tag $image us-central1-docker.pkg.dev/${PROJECT_ID}/test2-repo/$image:${SHORT_SHA}
             docker push us-central1-docker.pkg.dev/${PROJECT_ID}/test2-repo/$image:${SHORT_SHA}
           done < image_names.txt
+          echo done it
         
       - name: Copy Docker Compose file to VM
         uses: appleboy/scp-action@master
