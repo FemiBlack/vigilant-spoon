@@ -74,7 +74,7 @@
           strip_components: 2
   
       - name: Deploy to GCE
-        run: ssh -i ~/.ssh/google_compute_engine GFC@${{ secrets.GCE_INSTANCE_IP }} 'bash -ic "echo $PWD"'
+        run: ssh -i ~/.ssh/google_compute_engine GFC@${{ secrets.GCE_INSTANCE_IP }} 'echo $PWD'
       
       - name: Output SSH command results
         run: |
