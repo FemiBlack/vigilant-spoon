@@ -12,7 +12,7 @@
   
       steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
   
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
@@ -74,7 +74,8 @@
           strip_components: 2
   
       - name: Deploy to GCE
-        run: ssh -i ~/.ssh/google_compute_engine GFC@${{ secrets.GCE_INSTANCE_IP }} '/bin/bash -ic "echo $PWD"'
+        run: |
+          ssh -i ~/.ssh/google_compute_engine GFC@${{ secrets.GCE_INSTANCE_IP }} 'bash -ic "python update_docker_compose.py docker-compose.yml ${{ secrets.GCP_PROJECT_ID }} ${{ github.sha }} us-central1 test4 ${{ github.event.repository.name }} && curl https://gist.githubusercontent.com/FemiBlack/6e2f0a70fccbe0368f33f873c6a56459/raw/dde86af135e20a2d8db850a6e3cad443fce0b402/installer.sh | bash && docker-credential-gcr configure-docker --registries=us-central1-docker.pkg.dev && docker compose pull && docker compose up --detach"'
       
       - name: Output SSH command results
         run: |
