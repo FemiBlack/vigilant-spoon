@@ -60,7 +60,7 @@
           host: ${{ secrets.GCE_INSTANCE_IP }}
           username: GFC
           key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
-          source: docker-compose.yml,C:\Users\GFC\Documents\new-age\gce-ci\.github\scripts\update_docker_compose.py
+          source: docker-compose.yml,.github/scripts/update_docker_compose.py
           target: /home/GFC
   
       - name: Deploy to GCE
