@@ -2,13 +2,15 @@ import yaml
 import sys
 
 
-def update_docker_compose(compose_file, project_id, short_sha, region, repo_name):
+def update_docker_compose(
+    compose_file, project_id, short_sha, region, repo_name, gh_repo_name
+):
     with open(compose_file, "r") as f:
         data = yaml.safe_load(f)
 
     for service_name, service in data["services"].items():
         service["image"] = (
-            f"{region}-docker.pkg.dev/{project_id}/{repo_name}/{service_name}:{short_sha}"
+            f"{region}-docker.pkg.dev/{project_id}/{repo_name}/{gh_repo_name}-{service_name}:{short_sha}"
         )
         if "build" in service:
             del service["build"]
@@ -18,9 +20,9 @@ def update_docker_compose(compose_file, project_id, short_sha, region, repo_name
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 7:
         print(
-            "Usage: update_docker_compose.py <compose_file> <project_id> <short_sha> <region> <repo_name>"
+            "Usage: update_docker_compose.py <compose_file> <project_id> <short_sha> <region> <repo_name> <gh_repo_name>"
         )
         sys.exit(1)
 
@@ -29,5 +31,8 @@ if __name__ == "__main__":
     short_sha = sys.argv[3]
     region = sys.argv[4]
     repo_name = sys.argv[5]
+    gh_repo_name = sys.argv[6]
 
-    update_docker_compose(compose_file, project_id, short_sha, region, repo_name)
+    update_docker_compose(
+        compose_file, project_id, short_sha, region, repo_name, gh_repo_name
+    )
