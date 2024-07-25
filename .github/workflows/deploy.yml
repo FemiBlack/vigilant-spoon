@@ -39,10 +39,10 @@
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           SHORT_SHA: ${{ github.sha }}
         run: |
-          docker-compose -f docker-compose.yml build
+          docker compose -f docker-compose.yml build
   
       - name: List Docker images
-        run: docker-compose -f docker-compose.yml config --images > image_names.txt
+        run: docker compose -f docker-compose.yml config --images > image_names.txt
 
       - name: Tag and push Docker images
         env:
@@ -65,7 +65,7 @@
           strip_components: 2
   
       - name: Deploy to GCE
-        run: ssh -i ~/.ssh/google_compute_engine GFC@${{ secrets.GCE_INSTANCE_IP }} 'bash -ic "python update_docker_compose.py docker-compose.yml ${{ secrets.GCP_PROJECT_ID }} ${{ github.sha }} us-central1 test4 && curl https://gist.githubusercontent.com/FemiBlack/6e2f0a70fccbe0368f33f873c6a56459/raw/dde86af135e20a2d8db850a6e3cad443fce0b402/installer.sh | bash && docker compose pull && docker compose up"'
+        run: ssh -i ~/.ssh/google_compute_engine GFC@${{ secrets.GCE_INSTANCE_IP }} 'bash -ic "python update_docker_compose.py docker-compose.yml ${{ secrets.GCP_PROJECT_ID }} ${{ github.sha }} us-central1 test4 && curl https://gist.githubusercontent.com/FemiBlack/6e2f0a70fccbe0368f33f873c6a56459/raw/dde86af135e20a2d8db850a6e3cad443fce0b402/installer.sh | bash && docker-credential-gcr configure-docker --registries=us-central1-docker.pkg.dev && docker compose pull && docker compose up"'
       
       - name: Output SSH command results
         run: |
